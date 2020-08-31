@@ -17,7 +17,7 @@ public class MovementThroughWaypoints : MonoBehaviour
 
         transform.Translate(destination.normalized * speed * Time.deltaTime);
 
-        if (Vector3.Distance(transform.position,target.position) <= 0.2f)
+        if (Vector3.Distance(transform.position,target.position) <= 0.1f)
         {
             SetNewDestinationPoint();
         }
