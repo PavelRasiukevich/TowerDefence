@@ -1,12 +1,25 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Blaster : MonoBehaviour
 {
-    private Transform target;
+    [Header("Attributes")]
+    public float fireRate = 1f;
+    private float fireCountDown = 1f;
     public float range = 10f;
+
+    [Header("Unity Setup Fields")]
     public string enemyTag = "Enemy";
     public float turnSpeed = 10f;
     public Transform partToRotate;
+
+    private Transform target;
+
+    public GameObject projectilePrefab;
+    public Transform firePointRigth;
+    public Transform firePointLeft;
+
+
 
     private void Start()
     {
@@ -45,7 +58,13 @@ public class Blaster : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+
+        if (target == null)
+        {
+            //partToRotate.rotation = Quaternion.identity;
+            return;
+        }
+        else
         {
             Vector3 direction = target.position - transform.position;//define a pointer in which direction to look
             Quaternion lookRotation = Quaternion.LookRotation(direction);//create a rotation using specific direction
@@ -53,13 +72,30 @@ public class Blaster : MonoBehaviour
             partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
         }
 
-
-        if (target == null)
+        if (fireCountDown <= 0)
         {
-            //partToRotate.rotation = Quaternion.identity;
-            return;
+            Shoot();
+
+            fireCountDown = 1f / fireRate;
         }
-            
+
+        fireCountDown -= Time.deltaTime;
+
+    }
+
+    private void Shoot()
+    {
+        GameObject bulletRight = Instantiate(projectilePrefab, firePointRigth.position, projectilePrefab.transform.rotation);
+        GameObject bulletLeft = Instantiate(projectilePrefab, firePointLeft.position, projectilePrefab.transform.rotation);
+
+        Projectile projectile_1 = bulletRight.GetComponent<Projectile>();
+        Projectile projectile_2 = bulletLeft.GetComponent<Projectile>();
+
+        if (projectile_1 != null && projectile_2 != null)
+        {
+            projectile_1.Seek(target);
+            projectile_2.Seek(target);
+        }
 
     }
 
