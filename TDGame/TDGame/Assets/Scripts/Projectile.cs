@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     public float speed;
     public GameObject impactEffect;
     public float distanceThisFrame;
+
     public void Seek(Transform _target)
     {
         target = _target;
@@ -38,5 +39,6 @@ public class Projectile : MonoBehaviour
         GameObject effect = Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effect, 0.35f);
         Destroy(gameObject);
+        Destroy(target.gameObject);
     }
 }

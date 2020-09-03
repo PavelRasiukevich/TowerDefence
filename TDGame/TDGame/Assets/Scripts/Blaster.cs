@@ -59,6 +59,15 @@ public class Blaster : MonoBehaviour
     private void Update()
     {
 
+        if (fireCountDown <= 0)
+        {
+            Shoot();
+
+            fireCountDown = 1f / fireRate;
+        }
+
+        fireCountDown -= Time.deltaTime;
+
         if (target == null)
         {
             //partToRotate.rotation = Quaternion.identity;
@@ -72,14 +81,7 @@ public class Blaster : MonoBehaviour
             partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
         }
 
-        if (fireCountDown <= 0)
-        {
-            Shoot();
-
-            fireCountDown = 1f / fireRate;
-        }
-
-        fireCountDown -= Time.deltaTime;
+        
 
     }
 
