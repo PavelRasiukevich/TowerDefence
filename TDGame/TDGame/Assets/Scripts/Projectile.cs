@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
@@ -7,18 +6,22 @@ public class Projectile : MonoBehaviour
     public float speed;
     public GameObject impactEffect;
     public float distanceThisFrame;
+    public Vector3 currentEnemyPosition;
 
     public void Seek(Transform _target)
     {
         target = _target;
+        //currentEnemyPosition = target.position - transform.position;
     }
 
     private void Update()
     {
+
         if (target == null)
         {
             Destroy(gameObject);
             return;
+
         }
 
         Vector3 direction = target.position - transform.position;

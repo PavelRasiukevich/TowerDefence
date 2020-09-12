@@ -3,21 +3,26 @@
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
-    public GameObject defaultTowerToBuild;
-    private GameObject towerToBuild;
+
+    [Header("List of towers to build")]
+    public GameObject blaster;
+    public GameObject cannon;
+
+
+    private GameObject _towerToBuild;
 
     private void Awake()
     {
         instance = this;
     }
 
-    private void Start()
-    {
-        towerToBuild = defaultTowerToBuild;
-    }
-
     public GameObject GetTowerToBuild()
     {
-        return towerToBuild;
+        return _towerToBuild;
+    }
+
+    public void SetTowerToBuild(GameObject tower)
+    {
+        _towerToBuild = tower;
     }
 }

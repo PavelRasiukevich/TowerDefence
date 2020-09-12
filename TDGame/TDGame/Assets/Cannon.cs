@@ -1,30 +1,28 @@
 ﻿using UnityEngine;
 
-public class Blaster : MonoBehaviour
+public class Cannon : MonoBehaviour
 {
+    public GameObject projectilePrefab;
+    public Transform partToRotate;
+    public Transform firePoint;
+
     [Header("Attributes")]
     public float fireRate = 1f;
     private float fireCountDown = 1f;
     public float range = 10f;
-
-    [Header("Unity Setup Fields")]
-    public string enemyTag = "Enemy";
     public float turnSpeed = 10f;
-    public Transform partToRotate;
 
-    private Transform target;
+    private string enemyTag = "Enemy";
+    private Transform target = null;
 
-    public GameObject projectilePrefab;
-    public Transform firePointRigth;
-    public Transform firePointLeft;
 
 
 
     private void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating(nameof(UpdateTarget), 0, 0.5f);
+        
     }
-
 
     void UpdateTarget()
     {
@@ -57,7 +55,7 @@ public class Blaster : MonoBehaviour
 
     private void Update()
     {
-        if(target != null)
+        if (target != null)
         {
             if (fireCountDown <= 0)
             {
@@ -65,10 +63,11 @@ public class Blaster : MonoBehaviour
                 fireCountDown = 1f / fireRate;
             }
         }
-       
+
 
         fireCountDown -= Time.deltaTime;
 
+        #region ROTATION
         if (target == null)
         {
             //partToRotate.rotation = Quaternion.identity;
@@ -81,29 +80,17 @@ public class Blaster : MonoBehaviour
             Vector3 rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles; //convert from quaternions to eulers angles
             partToRotate.rotation = Quaternion.Euler(0, rotation.y, 0);
         }
-
-
-
+        #endregion
     }
 
     private void Shoot()
     {
-        GameObject bulletRight = Instantiate(projectilePrefab, firePointRigth.position, projectilePrefab.transform.rotation);
-        GameObject bulletLeft = Instantiate(projectilePrefab, firePointLeft.position, projectilePrefab.transform.rotation);
+        GameObject cannonBall = Instantiate(projectilePrefab, firePoint.position, projectilePrefab.transform.rotation);
+        Projectile projectile = cannonBall.GetComponent<Projectile>();
 
-        Projectile projectile_1 = bulletRight.GetComponent<Projectile>();
-        Projectile projectile_2 = bulletLeft.GetComponent<Projectile>();
-
-        if (projectile_1 != null && projectile_2 != null)
+        if (cannonBall != null)
         {
-            projectile_1.Seek(target);
-            projectile_2.Seek(target);
+            projectile.Seek(target);
         }
-
-    }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

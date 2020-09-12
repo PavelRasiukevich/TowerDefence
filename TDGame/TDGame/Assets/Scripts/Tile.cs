@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Tile : MonoBehaviour
 {
 
     public GameObject tower;
+    private GameObject _towerToBuild;
+    private BuildManager _buildManager;
     public Vector3 positionOffset;
 
     private Renderer _tileRenderer;
@@ -12,6 +15,8 @@ public class Tile : MonoBehaviour
 
     private void Start()
     {
+        _buildManager = BuildManager.instance;
+
         _tileRenderer = GetComponent<Renderer>();
 
         _materials = _tileRenderer.materials;
@@ -21,20 +26,31 @@ public class Tile : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (tower != null)
         {
             Debug.Log("Impossible to build.");
             return;
         }
 
-        GameObject towerToBuild = BuildManager.instance.GetTowerToBuild();
+        _towerToBuild = _buildManager.GetTowerToBuild();
 
-        tower = Instantiate(towerToBuild, transform.position + positionOffset, transform.rotation);
+        if (_towerToBuild != null)
+            tower = Instantiate(_towerToBuild, transform.position + positionOffset, transform.rotation);
+
+        BuildManager.instance.SetTowerToBuild(null);
     }
 
     private void OnMouseEnter()
     {
-        if(tower == null)
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+        if (_buildManager.GetTowerToBuild() == null)
+            return;
+
+        if (tower == null)
         {
             _materials[1].color = Color.green;
         }
@@ -43,7 +59,7 @@ public class Tile : MonoBehaviour
             _materials[1].color = Color.red;
         }
 
-        
+
     }
 
     private void OnMouseExit()
