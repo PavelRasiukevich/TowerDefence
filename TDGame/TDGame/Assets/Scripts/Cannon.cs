@@ -21,7 +21,7 @@ public class Cannon : MonoBehaviour
     private void Start()
     {
         InvokeRepeating(nameof(UpdateTarget), 0, 0.5f);
-        
+
     }
 
     void UpdateTarget()
@@ -92,5 +92,11 @@ public class Cannon : MonoBehaviour
         {
             projectile.Seek(target);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, range);
     }
 }

@@ -106,7 +106,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46a99a46d963c9c48afece8e33f9b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionRadius: 0.75
   speed: 5
-  impactEffect: {fileID: 50333980083106531, guid: 69a45859eb5543e46bda692221aaea40,
+  impactEffect: {fileID: 7824124480148831836, guid: adac69df4bc583b45a42cb61a97a748c,
     type: 3}
   distanceThisFrame: 0
+  currentEnemyPosition: {x: 0, y: 0, z: 0}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 256
+  colliders: []

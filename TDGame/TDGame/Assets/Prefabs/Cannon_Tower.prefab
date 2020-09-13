@@ -47,7 +47,7 @@ MonoBehaviour:
   partToRotate: {fileID: 5905615156448355667}
   firePoint: {fileID: 5627823413746543739}
   fireRate: 0.5
-  range: 25
+  range: 5
   turnSpeed: 5
 --- !u!1 &6538985997830826797
 GameObject:

@@ -1,17 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public float explosionRadius = 0f;
     private Transform target;
     public float speed;
     public GameObject impactEffect;
     public float distanceThisFrame;
     public Vector3 currentEnemyPosition;
+    public LayerMask enemyMask;
+
+    [Header("Test")]
+    public Collider[] colliders;
 
     public void Seek(Transform _target)
     {
         target = _target;
-        //currentEnemyPosition = target.position - transform.position;
+        currentEnemyPosition = target.position - transform.position;
     }
 
     private void Update()
@@ -35,13 +41,53 @@ public class Projectile : MonoBehaviour
         }
 
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, explosionRadius);
     }
 
     private void HitTarget()
     {
         GameObject effect = Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effect, 0.35f);
+
+        if (explosionRadius > 0f)
+        {
+            Explode();
+        }
+        else
+        {
+            Damage(target);
+        }
+
         Destroy(gameObject);
-        Destroy(target.gameObject);
+
     }
+
+
+
+    private void Explode()
+    {
+        colliders = Physics.OverlapSphere(transform.position, explosionRadius,enemyMask);
+
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Enemy"))
+            {
+                Damage(collider.transform);
+            }
+        }
+    }
+
+    private void Damage(Transform enemy)
+    {
+        Destroy(enemy.gameObject);
+        
+
+    }
+
+
 }
