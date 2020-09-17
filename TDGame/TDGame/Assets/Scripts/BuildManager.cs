@@ -1,28 +1,45 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
+    public Text money;
 
-    [Header("List of towers to build")]
-    public GameObject blaster;
-    public GameObject cannon;
-
-
-    private GameObject _towerToBuild;
+    private TowerBlueprint _towerToBuild;
 
     private void Awake()
     {
         instance = this;
     }
 
-    public GameObject GetTowerToBuild()
+    private void Start()
     {
-        return _towerToBuild;
+        money.text = string.Format("${0}", PlayerStats.ammountOfMoney);
     }
 
-    public void SetTowerToBuild(GameObject tower)
+    public bool canBuild { get { return _towerToBuild != null; } }
+    public bool hasMoney { get { return PlayerStats.ammountOfMoney >= _towerToBuild.price; } }
+
+    public void SetTowerToBuild(TowerBlueprint blueprint)
     {
-        _towerToBuild = tower;
+        _towerToBuild = blueprint;
+    }
+
+    public void BuildTowerOn(Tile tile)
+    {
+        if (PlayerStats.ammountOfMoney < _towerToBuild.price)
+        {
+            Debug.Log("Not enough money!");
+            return;
+        }
+
+
+        GameObject tower = Instantiate(_towerToBuild.prefab, tile.GetPositionToBuild(), Quaternion.identity);
+        tile.tower = tower;
+
+        PlayerStats.ammountOfMoney -= _towerToBuild.price;
+        money.text = string.Format("${0}", PlayerStats.ammountOfMoney);
+
     }
 }

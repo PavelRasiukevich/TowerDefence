@@ -4,19 +4,26 @@ public class Shop : MonoBehaviour
 {
     private BuildManager _buildManager;
 
+    public TowerBlueprint blaster;
+    public TowerBlueprint cannon;
+
+    public GameObject blasterGhost;
+    public GameObject cannonGhost;
+
     private void Start()
     {
         _buildManager = BuildManager.instance;
     }
 
-    public void PurchaseBlaster()
+    public void SelectBlaster()
     {
-        _buildManager.SetTowerToBuild(_buildManager.blaster);
-
+        Tile.ghostPrefab = blasterGhost;
+        _buildManager.SetTowerToBuild(blaster);
     }
 
-    public void PurchaseCannon()
+    public void SelectCannon()
     {
-        _buildManager.SetTowerToBuild(_buildManager.cannon);
+        Tile.ghostPrefab = cannonGhost;
+        _buildManager.SetTowerToBuild(cannon);
     }
 }

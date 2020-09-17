@@ -71,7 +71,7 @@ public class Projectile : MonoBehaviour
 
     private void Explode()
     {
-        colliders = Physics.OverlapSphere(transform.position, explosionRadius,enemyMask);
+        colliders = Physics.OverlapSphere(transform.position, explosionRadius, enemyMask);
 
         foreach (Collider collider in colliders)
         {
@@ -85,7 +85,6 @@ public class Projectile : MonoBehaviour
     private void Damage(Transform enemy)
     {
         Destroy(enemy.gameObject);
-        
 
     }
 

@@ -109,3 +109,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tower: {fileID: 0}
   positionOffset: {x: 0, y: 0.2, z: 0}
+  ghostPrefab: {fileID: 4099405236647787759, guid: 4b3a31033c369c442bb0ff3de23ccaa8,
+    type: 3}

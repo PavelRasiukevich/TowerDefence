@@ -5,6 +5,17 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    #region SINGLETON
+    public static GameManager instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+    #endregion
+
+    public event Action secondMouseButtonClick;
+
     #region My Spawner
     /*[SerializeField] Transform _spawnPoint;
     [SerializeField] Transform _enemyPrefab;
@@ -59,7 +70,14 @@ public class GameManager : MonoBehaviour
 
         countDown -= Time.deltaTime;
 
-        timer.text = Math.Ceiling(countDown).ToString();
+        countDown = Mathf.Clamp(countDown, 0f, Mathf.Infinity);
+
+        timer.text = string.Format("Time to next wave: \n {0:00.00}", countDown);
+
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            secondMouseButtonClick?.Invoke();
+        }
     }
 
     private IEnumerator SpawnWave()
