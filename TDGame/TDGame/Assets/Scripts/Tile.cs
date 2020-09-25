@@ -4,6 +4,8 @@ using UnityEngine.EventSystems;
 public class Tile : MonoBehaviour
 {
     public GameObject tower;
+    public TowerBlueprint towerBlueprint;
+    public bool isUpgraded = false;
 
     private BuildManager _buildManager;
     public Vector3 positionOffset;
@@ -38,18 +40,59 @@ public class Tile : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (!_buildManager.canBuild)
-            return;
-
         if (tower != null)
         {
-            Debug.Log("Impossible to build.");
+            _buildManager.SelectTile(this);
             return;
         }
 
-        _buildManager.BuildTowerOn(this);
+
+        if (!_buildManager.canBuild)
+            return;
+
+
+        //_buildManager.BuildTowerOn(this);
+        BuildTower(_buildManager.GetTowerToBuild());
 
     }
+
+    public void BuildTower(TowerBlueprint blueprintTower)
+    {
+        if (PlayerStats.ammountOfMoney < blueprintTower.price)
+        {
+            Debug.Log("Not enough money!");
+            return;
+        }
+
+
+        GameObject _tower = Instantiate(blueprintTower.prefab, GetPositionToBuild(), Quaternion.identity);
+        tower = _tower;
+
+        towerBlueprint = blueprintTower;
+
+        PlayerStats.ammountOfMoney -= blueprintTower.price;
+    }
+
+    public void UpgradeTower()
+    {
+
+        if (PlayerStats.ammountOfMoney < towerBlueprint.upgradePrice)
+        {
+            Debug.Log("Not enough money!");
+            return;
+        }
+
+        PlayerStats.ammountOfMoney -= towerBlueprint.price;
+
+        Destroy(tower);
+
+        GameObject _tower = Instantiate(towerBlueprint.upgradePrefab, GetPositionToBuild(), Quaternion.identity);
+        tower = _tower;
+
+        isUpgraded = true;
+
+    }
+
 
     private void OnMouseEnter()
     {

@@ -42,13 +42,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ead76c8b91129c44b9a25e3629ab681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 802499162465781093, guid: 25874bd36c8942e43b59134b7d778100,
+  projectilePrefab: {fileID: 802499162465781093, guid: 0914355dc9d950d488f2525eb0447c7f,
     type: 3}
   partToRotate: {fileID: 5905615156448355667}
   firePoint: {fileID: 5627823413746543739}
-  fireRate: 0.5
-  range: 5
-  turnSpeed: 5
+  laserGlow: {fileID: 0}
+  arrow: {fileID: 8895732138333713274, guid: eb262b1c472793e468558bc0a4df7e2d, type: 3}
+  isArrowTower: 0
+  fireRate: 0.7
+  range: 6
+  turnSpeed: 7.5
+  laserOn: 0
+  lineRenderer: {fileID: 0}
+  laserDamage: 0
+  laserDamageRate: 0
+  slowValue: 0.5
 --- !u!1 &6538985997830826797
 GameObject:
   m_ObjectHideFlags: 0
@@ -61,7 +69,7 @@ GameObject:
   - component: {fileID: 7375539561587998258}
   - component: {fileID: 4737744401656843000}
   m_Layer: 0
-  m_Name: Cannon_Tower
+  m_Name: Cannon_Tower_Upgraded
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +116,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -872196626646429207, guid: 5b8fc3fc4bc54bd4c9d3f75a77cb99c8, type: 3}
+  - {fileID: 2100000, guid: 1a2a4070b6ac6ba4997060de403401b7, type: 2}
   - {fileID: 7555185752953191562, guid: 5b8fc3fc4bc54bd4c9d3f75a77cb99c8, type: 3}
   - {fileID: -4231637370832951941, guid: 5b8fc3fc4bc54bd4c9d3f75a77cb99c8, type: 3}
   m_StaticBatchInfo:
@@ -196,12 +204,17 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: cc213e37392183248b554db9e91255a1,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.3333334
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc213e37392183248b554db9e91255a1,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.3333334
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: cc213e37392183248b554db9e91255a1,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: -8577743373132383625, guid: cc213e37392183248b554db9e91255a1,
         type: 3}

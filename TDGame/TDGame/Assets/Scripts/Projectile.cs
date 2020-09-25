@@ -3,13 +3,17 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    public static event Action ArrowDestroyed;
+
     public float explosionRadius = 0f;
     private Transform target;
     public float speed;
+    public int damage;
     public GameObject impactEffect;
     public float distanceThisFrame;
     public Vector3 currentEnemyPosition;
     public LayerMask enemyMask;
+
 
     [Header("Test")]
     public Collider[] colliders;
@@ -41,6 +45,7 @@ public class Projectile : MonoBehaviour
         }
 
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
+        transform.LookAt(target);
 
     }
 
@@ -51,6 +56,7 @@ public class Projectile : MonoBehaviour
 
     private void HitTarget()
     {
+
         GameObject effect = Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effect, 0.35f);
 
@@ -63,7 +69,10 @@ public class Projectile : MonoBehaviour
             Damage(target);
         }
 
+        
         Destroy(gameObject);
+
+        ArrowDestroyed?.Invoke();
 
     }
 
@@ -78,15 +87,14 @@ public class Projectile : MonoBehaviour
             if (collider.CompareTag("Enemy"))
             {
                 Damage(collider.transform);
+
             }
         }
     }
 
     private void Damage(Transform enemy)
     {
-        Destroy(enemy.gameObject);
-
+        enemy.GetComponent<EnemyScript>().TakeDamage(damage);
     }
-
 
 }

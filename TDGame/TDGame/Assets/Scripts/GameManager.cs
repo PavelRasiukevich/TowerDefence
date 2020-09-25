@@ -83,6 +83,7 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnWave()
     {
         waveIndex++;
+        PlayerStats.wavesSurvived++;
 
         for (int i = 0; i < waveIndex; i++)
         {

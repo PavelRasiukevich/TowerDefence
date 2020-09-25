@@ -1,12 +1,16 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class BuildManager : MonoBehaviour
 {
     public static BuildManager instance;
-    public Text money;
 
     private TowerBlueprint _towerToBuild;
+
+    private Tile _selectedTile;
+
+    public NodeUI nodeUI;
 
     private void Awake()
     {
@@ -15,31 +19,39 @@ public class BuildManager : MonoBehaviour
 
     private void Start()
     {
-        money.text = string.Format("${0}", PlayerStats.ammountOfMoney);
+
     }
 
     public bool canBuild { get { return _towerToBuild != null; } }
     public bool hasMoney { get { return PlayerStats.ammountOfMoney >= _towerToBuild.price; } }
 
-    public void SetTowerToBuild(TowerBlueprint blueprint)
+    public void SelectTile(Tile tile)
     {
-        _towerToBuild = blueprint;
-    }
-
-    public void BuildTowerOn(Tile tile)
-    {
-        if (PlayerStats.ammountOfMoney < _towerToBuild.price)
+        if (_selectedTile == tile)
         {
-            Debug.Log("Not enough money!");
+            DeselectTile();
             return;
         }
 
+        _selectedTile = tile;
+        _towerToBuild = null;
+        nodeUI.SetTarget(_selectedTile);
+    }
 
-        GameObject tower = Instantiate(_towerToBuild.prefab, tile.GetPositionToBuild(), Quaternion.identity);
-        tile.tower = tower;
+    public void DeselectTile()
+    {
+        _selectedTile = null;
+        nodeUI.Hide();
+    }
 
-        PlayerStats.ammountOfMoney -= _towerToBuild.price;
-        money.text = string.Format("${0}", PlayerStats.ammountOfMoney);
+    public void SetTowerToBuild(TowerBlueprint blueprint)
+    {
+        _towerToBuild = blueprint;
+        DeselectTile();
+    }
 
+    public TowerBlueprint GetTowerToBuild()
+    {
+        return _towerToBuild;
     }
 }

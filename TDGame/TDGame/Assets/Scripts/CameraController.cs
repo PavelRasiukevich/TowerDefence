@@ -18,6 +18,11 @@ public class CameraController : MonoBehaviour
     private void Update()
     {
 
+        if (GameController.GameIsOver)
+        {
+            enabled = false;
+        }
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         float scroll = Input.GetAxis("Mouse ScrollWheel");

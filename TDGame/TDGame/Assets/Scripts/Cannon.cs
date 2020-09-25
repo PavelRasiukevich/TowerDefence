@@ -5,6 +5,11 @@ public class Cannon : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform partToRotate;
     public Transform firePoint;
+    public ParticleSystem laserGlow;
+
+    public GameObject arrow;
+
+    public bool isArrowTower;
 
     [Header("Attributes")]
     public float fireRate = 1f;
@@ -12,8 +17,18 @@ public class Cannon : MonoBehaviour
     public float range = 10f;
     public float turnSpeed = 10f;
 
+    [Header("Laser")]
+    public bool laserOn = false;
+    public LineRenderer lineRenderer;
+    public int laserDamage;
+    public float laserDamageRate;
+    private float laserCountDown;
+
+    public float slowValue = 0.5f;
+
     private string enemyTag = "Enemy";
     private Transform target = null;
+    private EnemyScript targetEnemy;
 
 
 
@@ -22,6 +37,11 @@ public class Cannon : MonoBehaviour
     {
         InvokeRepeating(nameof(UpdateTarget), 0, 0.5f);
 
+    }
+    
+    private void Awake()
+    {
+        Projectile.ArrowDestroyed += ArrowDestroyedHandler;
     }
 
     void UpdateTarget()
@@ -44,6 +64,7 @@ public class Cannon : MonoBehaviour
             if (nearesEnemy != null && shortestDistance <= range)
             {
                 target = nearesEnemy.transform;
+                targetEnemy = nearesEnemy.GetComponent<EnemyScript>();
             }
             else
             {
@@ -55,18 +76,77 @@ public class Cannon : MonoBehaviour
 
     private void Update()
     {
-        if (target != null)
+        if (target == null)
         {
-            if (fireCountDown <= 0)
+            if (laserOn)
             {
-                Shoot();
-                fireCountDown = 1f / fireRate;
+                if (lineRenderer.enabled)
+                {
+                    lineRenderer.enabled = false;
+                    laserGlow.Stop();
+                }
             }
+            return;
         }
 
 
-        fireCountDown -= Time.deltaTime;
+        if (laserOn)
+        {
+            Laser();
+        }
+        else
+        {
+            if (target != null)
+            {
+                if (fireCountDown <= 0)
+                {
+                    if (isArrowTower)
+                        arrow.SetActive(false);
 
+                    Shoot();
+                    fireCountDown = 1f / fireRate;
+                }
+
+            }
+
+            fireCountDown -= Time.deltaTime;
+        }
+
+        LockOnTarget();
+    }
+
+    private void Laser()
+    {
+
+        #region Laser Glow 
+        laserGlow.Play();
+
+        Vector3 dir = firePoint.transform.position - target.position;
+        laserGlow.transform.position = target.position + dir.normalized * 0.25f;
+
+        lineRenderer.enabled = true;
+        lineRenderer.SetPosition(1, firePoint.position);
+        lineRenderer.SetPosition(0, target.position);
+        #endregion
+
+        #region Damage 
+        if (laserCountDown <= 0)
+        {
+            targetEnemy.TakeDamage(laserDamage);
+            laserCountDown = 1f / laserDamageRate;
+        }
+
+        laserCountDown -= Time.deltaTime;
+        #endregion
+
+        #region Slow
+        //targetEnemy.Slow(true);
+        targetEnemy.Slow(slowValue);
+        #endregion
+    }
+
+    void LockOnTarget()
+    {
         #region ROTATION
         if (target == null)
         {
@@ -91,6 +171,7 @@ public class Cannon : MonoBehaviour
         if (cannonBall != null)
         {
             projectile.Seek(target);
+
         }
     }
 
@@ -98,5 +179,11 @@ public class Cannon : MonoBehaviour
     {
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    public void ArrowDestroyedHandler()
+    {
+        if (isArrowTower)
+            arrow.SetActive(true);
     }
 }

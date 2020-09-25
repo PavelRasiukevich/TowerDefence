@@ -72,8 +72,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc84f6f9c0d38594f86e249c54c69fc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 1
-  range: 2
+  fireRate: 5
+  range: 3
   enemyTag: Enemy
   turnSpeed: 10
   partToRotate: {fileID: 3724428492032077939}
@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 288239644766317040}
   - component: {fileID: 2586472632986361146}
   m_Layer: 0
-  m_Name: Blaster_Tower 1
+  m_Name: Blaster_Tower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
