@@ -27,7 +27,7 @@ public class NodeUI : MonoBehaviour
         }
 
 
-        sellPrice.text = string.Format("${0}", _target.towerBlueprint.sellPrice);
+        sellPrice.text = string.Format("${0}", _target.towerBlueprint.price / 2);
 
 
         ui.SetActive(true);
@@ -43,6 +43,12 @@ public class NodeUI : MonoBehaviour
     public void Upgrade()
     {
         target.UpgradeTower();
+        BuildManager.instance.DeselectTile();
+    }
+
+    public void SellTower()
+    {
+        target.Sell();
         BuildManager.instance.DeselectTile();
     }
 }

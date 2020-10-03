@@ -93,6 +93,16 @@ public class Tile : MonoBehaviour
 
     }
 
+    public void Sell()
+    {
+        PlayerStats.ammountOfMoney += towerBlueprint.price / 2;
+        Destroy(tower);
+
+        towerBlueprint = null;
+
+        isUpgraded = false;
+    }
+
 
     private void OnMouseEnter()
     {
