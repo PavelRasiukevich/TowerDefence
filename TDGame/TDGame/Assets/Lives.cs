@@ -7,6 +7,6 @@ public class Lives : MonoBehaviour
 
     private void Update()
     {
-        lives.text = string.Format("LIVES:\n{0}", PlayerStats.lives);
+        lives.text = string.Format("LIVES:{0}", PlayerStats.lives);
     }
 }

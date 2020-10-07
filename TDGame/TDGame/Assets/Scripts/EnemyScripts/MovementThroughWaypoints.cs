@@ -43,8 +43,27 @@ public class MovementThroughWaypoints : MonoBehaviour
 
     private void ActionAfterReachTheLastPoint()
     {
+        switch (enemy.enemyName)
+        {
+            case "Regular":
+                PlayerStats.lives -= 3;
+                break;
+            case "Slim":
+                PlayerStats.lives -= 4;
+                break;
+            case "Fat":
+                PlayerStats.lives -= 5;
+                break;
+            case "Giga":
+                PlayerStats.lives -= 10;
+                break;
+            default:
+                PlayerStats.lives--;
+                break;
 
-        PlayerStats.lives--;
+        }
+
+        GameManager.instance.EnemiesAlive--;
         Destroy(gameObject);
     }
 }

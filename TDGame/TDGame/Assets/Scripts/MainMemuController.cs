@@ -3,13 +3,17 @@ using UnityEngine.SceneManagement;
 
 public class MainMemuController : MonoBehaviour
 {
-    public void StartGame()
+    public SceneFader sceneFader;
+
+    public void StartGame(int index)
     {
-        SceneManager.LoadScene(1);
+        sceneFader.FadeTo(index);
     }
 
     public void Quit()
     {
         Application.Quit();
     }
+
+
 }

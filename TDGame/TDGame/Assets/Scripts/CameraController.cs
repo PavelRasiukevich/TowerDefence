@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 
     private Vector3 _movement;
     private Vector3 _currentposition;
+    public float scrollspeed;
 
     private void Start()
     {
@@ -33,7 +34,7 @@ public class CameraController : MonoBehaviour
 
         _movement = new Vector3(h, scroll, v);
 
-        transform.Translate(_movement * cameraSpeed * Time.deltaTime, Space.World);
+        transform.Translate(_movement * scrollspeed * Time.deltaTime, Space.World);
 
         if (Input.mousePosition.y > Screen.height - gap)
         {

@@ -571,8 +571,8 @@ MonoBehaviour:
   laserOn: 1
   lineRenderer: {fileID: 965813666278395110}
   laserDamage: 1
-  laserDamageRate: 25
-  slowValue: 0.35
+  laserDamageRate: 35
+  slowValue: 0.42
 --- !u!120 &965813666278395110
 LineRenderer:
   m_ObjectHideFlags: 0

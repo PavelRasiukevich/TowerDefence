@@ -82,7 +82,7 @@ public class Tile : MonoBehaviour
             return;
         }
 
-        PlayerStats.ammountOfMoney -= towerBlueprint.price;
+        PlayerStats.ammountOfMoney -= towerBlueprint.upgradePrice;
 
         Destroy(tower);
 

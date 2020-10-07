@@ -38,7 +38,7 @@ public class Cannon : MonoBehaviour
         InvokeRepeating(nameof(UpdateTarget), 0, 0.5f);
 
     }
-    
+
     private void Awake()
     {
         Projectile.ArrowDestroyed += ArrowDestroyedHandler;
@@ -132,7 +132,9 @@ public class Cannon : MonoBehaviour
         #region Damage 
         if (laserCountDown <= 0)
         {
-            targetEnemy.TakeDamage(laserDamage);
+            if (targetEnemy.health > 0)
+                targetEnemy.TakeDamage(laserDamage);
+
             laserCountDown = 1f / laserDamageRate;
         }
 

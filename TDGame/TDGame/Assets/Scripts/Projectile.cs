@@ -18,11 +18,18 @@ public class Projectile : MonoBehaviour
     [Header("Test")]
     public Collider[] colliders;
 
+    private void Start()
+    {
+
+    }
+
     public void Seek(Transform _target)
     {
         target = _target;
         currentEnemyPosition = target.position - transform.position;
     }
+
+
 
     private void Update()
     {
@@ -69,7 +76,7 @@ public class Projectile : MonoBehaviour
             Damage(target);
         }
 
-        
+
         Destroy(gameObject);
 
         ArrowDestroyed?.Invoke();
@@ -94,7 +101,14 @@ public class Projectile : MonoBehaviour
 
     private void Damage(Transform enemy)
     {
-        enemy.GetComponent<EnemyScript>().TakeDamage(damage);
+        EnemyScript es = enemy.GetComponent<EnemyScript>();
+
+        if (es.health > 0)
+        {
+            es.TakeDamage(damage);
+        }
+
+        return;
     }
 
 }

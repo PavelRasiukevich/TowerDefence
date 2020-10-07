@@ -1,9 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyScript : MonoBehaviour
 {
-    public int health;
+    public float startHealth;
+    public float health;
     public int bounty;
+
+    public string enemyName;
+
+    public Image hpBar;
 
     [HideInInspector]
     public float speed;
@@ -12,27 +18,32 @@ public class EnemyScript : MonoBehaviour
 
     private void Awake()
     {
+        health = startHealth;
         speed = startSpeed;
-    }
-
-    private void Update()
-    {
 
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
+       //Debug.LogWarning(health);
+        hpBar.fillAmount = health / startHealth;
 
         if (health <= 0)
+        {
             Die();
+            return;
+        }
 
     }
 
-    private void Die()
+    public void Die()
     {
         AddBounty();
         Destroy(gameObject);
+        //Debug.LogWarning(gameObject.name + " destroyed");
+        GameManager.instance.EnemiesAlive--;
+        //Debug.LogWarning("EnemiesAlive decreased");
     }
 
     private void AddBounty()

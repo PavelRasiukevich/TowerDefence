@@ -5,6 +5,8 @@ public class Pause : MonoBehaviour
 {
     public GameObject ui;
 
+    public SceneFader sceneFader;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -34,10 +36,15 @@ public class Pause : MonoBehaviour
 
     public void Retry()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        sceneFader.FadeTo(SceneManager.GetActiveScene().buildIndex);
         Toggle();
 
     }
 
+    public void MainMenu()
+    {
+        sceneFader.FadeTo(0);
+        Toggle();
+    }
 
 }
